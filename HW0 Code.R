@@ -44,6 +44,10 @@ y <- rnorm(1000,5,0.5)
 
 # Q1k)Generate a variable x with 1,000 values, where each value is a mean of 10 samples from g, with replacement. (Hint: use a for loop)
 
-# Q1 Estimate a simple bivariate regression y ??? x and print your results. What do your results show?
+# Q1)l Estimate a simple bivariate regression y ??? x and print your results. What do your results show?
 reg <- lm(y~x)
 print(reg)
+
+
+
+# Q2
