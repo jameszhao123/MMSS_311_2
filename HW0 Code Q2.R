@@ -4,13 +4,13 @@ setwd("~/GitHub/MMSS_311_2")
 pums_chicago <- read.csv("pums_chicago.csv")
 
 #2b How many variables are there in the dataset? 
-# There are 204 variables
+# There are 204 variables (from environment panel)
 
 #2c What is the mean annual income, PINCP in this dataset?
 PINCP_mean <- mean(pums_chicago$PINCP, na.rm = TRUE)
 
 #2d Create a new variable in the PUMS dataframe called PINCP_LOG that is equal to the log of annual income. Were NaN values produced? Why?
-#NaN values were produced because we cannot take log of negative numbers.
+#NaN values were produced because we cannot take log of 0, which is the value of some annual income observations.
 
 pums_chicago$PINCP_LOG <- log(pums_chicago$PINCP)
 
@@ -58,7 +58,7 @@ CrossTable(pums_chicago$ESR, pums_chicago$RAC1P)
 wagp_on_wkhp <- lm(WAGP ~ WKHP, pums_chicago)
 
 #2kvii Plot the residuals from this regression against the ???tted values. What does this show?
-#This shows that
+#This shows that residuals tend to decrease as the fitted values increase. Furthermore, we can observe that there are only a small number of large deviations for any given fitted value.
 wagp_on_wkhp_res <- resid(wagp_on_wkhp)
 wagp_on_wkhp_fitted <- fitted(wagp_on_wkhp)
 plot(wagp_on_wkhp_fitted, wagp_on_wkhp_res, 

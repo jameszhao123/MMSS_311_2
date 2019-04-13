@@ -49,6 +49,7 @@ for(i in 1:1000) {
 }
 
 # Q1)l Estimate a simple bivariate regression y on x and print your results. What do your results show?
+# The results show that the OLS estimator of the coefficient of x is 0.02633, which is very small. This shows that there is only a weak positive correlation between y and x.
 reg <- lm(y ~ x)
 print(reg)
 
