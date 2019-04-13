@@ -1,122 +1,175 @@
-\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
-%% maxwidth is the original width if it is less than linewidth
-%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
-\makeatletter
-\def\maxwidth{ %
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
   \else
-    \Gin@nat@width
+    \usepackage{fontspec}
   \fi
-}
-\makeatother
-
-\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
-\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
-\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
-\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
-\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
-\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
-\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
-\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
-\let\hlipl\hlkwb
-
-\usepackage{framed}
-\makeatletter
-\newenvironment{kframe}{%
- \def\at@end@of@kframe{}%
- \ifinner\ifhmode%
-  \def\at@end@of@kframe{\end{minipage}}%
-  \begin{minipage}{\columnwidth}%
- \fi\fi%
- \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
- \colorbox{shadecolor}{##1}\hskip-\fboxsep
-     % There is no \\@totalrightmargin, so:
-     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
- \MakeFramed {\advance\hsize-\width
-   \@totalleftmargin\z@ \linewidth\hsize
-   \@setminipage}}%
- {\par\unskip\endMakeFramed%
- \at@end@of@kframe}
-\makeatother
-
-\definecolor{shadecolor}{rgb}{.97, .97, .97}
-\definecolor{messagecolor}{rgb}{0, 0, 0}
-\definecolor{warningcolor}{rgb}{1, 0, 1}
-\definecolor{errorcolor}{rgb}{1, 0, 0}
-\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
-
-\usepackage{alltt}
-\usepackage[sc]{mathpazo}
-\renewcommand{\sfdefault}{lmss}
-\renewcommand{\ttdefault}{lmtt}
-\usepackage[T1]{fontenc}
-\usepackage{geometry}
-\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
-\setcounter{secnumdepth}{2}
-\setcounter{tocdepth}{2}
-\usepackage[unicode=true,pdfusetitle,
- bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
- breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
- {hyperref}
-\hypersetup{
- pdfstartview={XYZ null null 1}}
-
-\makeatletter
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-\renewcommand{\textfraction}{0.05}
-\renewcommand{\topfraction}{0.8}
-\renewcommand{\bottomfraction}{0.8}
-\renewcommand{\floatpagefraction}{0.75}
-
-\makeatother
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={HW0\_Final.R},
+            pdfauthor={James},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{HW0\_Final.R}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{James}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{2019-04-13}
+
+
 \begin{document}
+\maketitle
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{setwd}\NormalTok{(}\StringTok{"~/GitHub/MMSS_311_2"}\NormalTok{)}
 
+\CommentTok{# Q1a) A vector with the numbers 1-5 in order }
+\NormalTok{a <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{)}
 
+\CommentTok{# Q1b) A scalar named Mindy that takes the value 12}
+\NormalTok{Mindy <-}\StringTok{ }\DecValTok{12}
 
+\CommentTok{# Q1c) A 2×3 matrix with the numbers 1-6 in order by rows }
+\NormalTok{b <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{6}\NormalTok{)}
+\KeywordTok{matrix}\NormalTok{(b,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
-
-
-
-The results below are generated from an R script.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{setwd}\hlstd{(}\hlstr{"~/GitHub/MMSS_311_2"}\hlstd{)}
-
-\hlcom{# Q1a) A vector with the numbers 1-5 in order }
-\hlstd{a} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{5}\hlstd{)}
-
-\hlcom{# Q1b) A scalar named Mindy that takes the value 12}
-\hlstd{Mindy} \hlkwb{<-} \hlnum{12}
-
-\hlcom{# Q1c) A 2�3 matrix with the numbers 1-6 in order by rows }
-\hlstd{b} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{6}\hlstd{)}
-\hlkwd{matrix}\hlstd{(b,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{TRUE}\hlstd{)}
-\end{alltt}
 \begin{verbatim}
 ##      [,1] [,2] [,3]
 ## [1,]    1    2    3
 ## [2,]    4    5    6
 \end{verbatim}
-\begin{alltt}
-\hlcom{# Q1d) A 2�3 matrix with the numbers 1-6 in order by columns }
-\hlkwd{matrix}\hlstd{(b,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)}
-\end{alltt}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Q1d) A 2×3 matrix with the numbers 1-6 in order by columns }
+\KeywordTok{matrix}\NormalTok{(b,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{verbatim}
 ##      [,1] [,2] [,3]
 ## [1,]    1    3    5
 ## [2,]    2    4    6
 \end{verbatim}
-\begin{alltt}
-\hlcom{# Q1e) A 10�10 matrix of 1's }
-\hlkwd{matrix}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{10}\hlstd{,}\hlnum{10}\hlstd{)}
-\end{alltt}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Q1e) A 10×10 matrix of 1's }
+\KeywordTok{matrix}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{verbatim}
 ##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
 ##  [1,]    1    1    1    1    1    1    1    1    1     1
@@ -130,48 +183,56 @@ The results below are generated from an R script.
 ##  [9,]    1    1    1    1    1    1    1    1    1     1
 ## [10,]    1    1    1    1    1    1    1    1    1     1
 \end{verbatim}
-\begin{alltt}
-\hlcom{# Q1f)  A vector consisting of the words THIS, IS, A, VECTOR (each word a separate element) }
-\hlstd{wordvec} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"THIS"}\hlstd{,} \hlstr{"IS"}\hlstd{,} \hlstr{"A"}\hlstd{,} \hlstr{"VECTOR"}\hlstd{)}
 
-\hlcom{# Q1g) A function that takes the sum of any three numbers }
-\hlstd{sum_of_three_numbers} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,}\hlkwc{y}\hlstd{,}\hlkwc{z}\hlstd{) \{}
-  \hlstd{x}\hlopt{+}\hlstd{y}\hlopt{+}\hlstd{z}
-\hlstd{\}}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Q1f)  A vector consisting of the words THIS, IS, A, VECTOR (each word a separate element) }
+\NormalTok{wordvec <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"THIS"}\NormalTok{, }\StringTok{"IS"}\NormalTok{, }\StringTok{"A"}\NormalTok{, }\StringTok{"VECTOR"}\NormalTok{)}
 
-\hlcom{# Q1h) A function that takes one number as input, returns "Yes" if the number is less than or equal to 10 and "No" if the number is greater than 10}
-\hlstd{check} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
-  \hlkwa{if} \hlstd{(x}\hlopt{<=}\hlnum{10}\hlstd{) \{}
-    \hlstd{result} \hlkwb{<-} \hlstr{"Yes"}
-  \hlstd{\}}
-  \hlkwa{else if} \hlstd{(x}\hlopt{>}\hlnum{10}\hlstd{) \{}
-    \hlstd{result} \hlkwb{<-} \hlstr{"No"}
-  \hlstd{\}}
-  \hlkwd{return}\hlstd{(result)}
-\hlstd{\}}
-\hlkwd{check}\hlstd{(}\hlnum{9}\hlstd{)}
-\end{alltt}
+\CommentTok{# Q1g) A function that takes the sum of any three numbers }
+\NormalTok{sum_of_three_numbers <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x,y,z) \{}
+\NormalTok{  x}\OperatorTok{+}\NormalTok{y}\OperatorTok{+}\NormalTok{z}
+\NormalTok{\}}
+
+\CommentTok{# Q1h) A function that takes one number as input, returns "Yes" if the number is less than or equal to 10 and "No" if the number is greater than 10}
+\NormalTok{check <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x) \{}
+  \ControlFlowTok{if}\NormalTok{ (x}\OperatorTok{<=}\DecValTok{10}\NormalTok{) \{}
+\NormalTok{    result <-}\StringTok{ "Yes"}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{ (x}\OperatorTok{>}\DecValTok{10}\NormalTok{) \{}
+\NormalTok{    result <-}\StringTok{ "No"}
+\NormalTok{  \}}
+  \KeywordTok{return}\NormalTok{(result)}
+\NormalTok{\}}
+\KeywordTok{check}\NormalTok{(}\DecValTok{9}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{verbatim}
 ## [1] "Yes"
 \end{verbatim}
-\begin{alltt}
-\hlcom{# Q1i) Generate synthetic data by taking 1,000 draws from a normal distribution with a mean of 10 and a standard deviation of 1. Save these data to an object g.}
-\hlstd{g} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{,}\hlnum{10}\hlstd{,}\hlnum{1}\hlstd{)}
 
-\hlcom{# Q1j) Create a separate object called y with 1,000 draws from a normal distribution with a mean of 5 and a standard deviation of 0.5. }
-\hlstd{y} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{0.5}\hlstd{)}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Q1i) Generate synthetic data by taking 1,000 draws from a normal distribution with a mean of 10 and a standard deviation of 1. Save these data to an object g.}
+\NormalTok{g <-}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{1000}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{1}\NormalTok{)}
 
-\hlcom{# Q1k)Generate a variable x with 1,000 values, where each value is a mean of 10 samples from g, with replacement. (Hint: use a for loop)}
-\hlstd{x} \hlkwb{=} \hlkwa{NULL}
-\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{1000}\hlstd{) \{}
-  \hlstd{x [i]} \hlkwb{<-} \hlkwd{mean}\hlstd{(}\hlkwd{sample}\hlstd{(g,} \hlnum{10}\hlstd{,} \hlnum{TRUE}\hlstd{))}
-\hlstd{\}}
+\CommentTok{# Q1j) Create a separate object called y with 1,000 draws from a normal distribution with a mean of 5 and a standard deviation of 0.5. }
+\NormalTok{y <-}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{1000}\NormalTok{,}\DecValTok{5}\NormalTok{,}\FloatTok{0.5}\NormalTok{)}
 
-\hlcom{# Q1)l Estimate a simple bivariate regression y on x and print your results. What do your results show?}
-\hlcom{# The results show that the OLS estimator of the coefficient of x is 0.02633, which is very small. This shows that there is only a weak positive correlation between y and x.}
-\hlstd{reg} \hlkwb{<-} \hlkwd{lm}\hlstd{(y} \hlopt{~} \hlstd{x)}
-\hlkwd{print}\hlstd{(reg)}
-\end{alltt}
+\CommentTok{# Q1k)Generate a variable x with 1,000 values, where each value is a mean of 10 samples from g, with replacement. (Hint: use a for loop)}
+\NormalTok{x =}\StringTok{ }\OtherTok{NULL}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{1000}\NormalTok{) \{}
+\NormalTok{  x [i] <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(}\KeywordTok{sample}\NormalTok{(g, }\DecValTok{10}\NormalTok{, }\OtherTok{TRUE}\NormalTok{))}
+\NormalTok{\}}
+
+\CommentTok{# Q1)l Estimate a simple bivariate regression y on x and print your results. What do your results show?}
+\CommentTok{# The results show that the OLS estimator of the coefficient of x is 0.02633, which is very small. This shows that there is only a weak positive correlation between y and x.}
+\NormalTok{reg <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(y }\OperatorTok{~}\StringTok{ }\NormalTok{x)}
+\KeywordTok{print}\NormalTok{(reg)}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{verbatim}
 ## 
 ## Call:
@@ -179,97 +240,129 @@ The results below are generated from an R script.
 ## 
 ## Coefficients:
 ## (Intercept)            x  
-##    4.972764     0.003808
+##     4.41665      0.05605
 \end{verbatim}
-\begin{alltt}
-\hlcom{#Q2a Create an R script ???le that sets your working directory and loads the data. }
-\hlkwd{setwd}\hlstd{(}\hlstr{"~/GitHub/MMSS_311_2"}\hlstd{)}
 
-\hlstd{pums_chicago} \hlkwb{<-} \hlkwd{read.csv}\hlstd{(}\hlstr{"pums_chicago.csv"}\hlstd{)}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Q2a Create an R script ﬁle that sets your working directory and loads the data. }
+\KeywordTok{setwd}\NormalTok{(}\StringTok{"~/GitHub/MMSS_311_2"}\NormalTok{)}
 
-\hlcom{#2b How many variables are there in the dataset? }
-\hlcom{# There are 204 variables (from environment panel)}
+\NormalTok{pums_chicago <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"pums_chicago.csv"}\NormalTok{)}
 
-\hlcom{#2c What is the mean annual income, PINCP in this dataset?}
-\hlstd{PINCP_mean} \hlkwb{<-} \hlkwd{mean}\hlstd{(pums_chicago}\hlopt{$}\hlstd{PINCP,} \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\CommentTok{#2b How many variables are there in the dataset? }
+\CommentTok{# There are 204 variables (from environment panel)}
 
-\hlcom{#2d Create a new variable in the PUMS dataframe called PINCP_LOG that is equal to the log of annual income. Were NaN values produced? Why?}
-\hlcom{#NaN values were produced because we cannot take log of 0, which is the value of some annual income observations.}
-\hlstd{pums_chicago}\hlopt{$}\hlstd{PINCP_LOG} \hlkwb{<-} \hlkwd{log}\hlstd{(pums_chicago}\hlopt{$}\hlstd{PINCP)}
-\end{alltt}
+\CommentTok{#2c What is the mean annual income, PINCP in this dataset?}
+\NormalTok{PINCP_mean <-}\StringTok{ }\KeywordTok{mean}\NormalTok{(pums_chicago}\OperatorTok{$}\NormalTok{PINCP, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
 
+\CommentTok{#2d Create a new variable in the PUMS dataframe called PINCP_LOG that is equal to the log of annual income. Were NaN values produced? Why?}
+\CommentTok{#NaN values were produced because we cannot take log of 0, which is the value of some annual income observations.}
+\NormalTok{pums_chicago}\OperatorTok{$}\NormalTok{PINCP_LOG <-}\StringTok{ }\KeywordTok{log}\NormalTok{(pums_chicago}\OperatorTok{$}\NormalTok{PINCP)}
+\end{Highlighting}
+\end{Shaded}
 
-{\ttfamily\noindent\color{warningcolor}{\#\# Warning in log(pums\_chicago\$PINCP): NaNs produced}}\begin{alltt}
-\hlcom{#2e Create a new variable GRAD.DUMMY that takes the value "grad" if the respondent has any post-high school education, and "no grad" otherwise. Use the SCHL variable. }
-\hlstd{pums_chicago}\hlopt{$}\hlstd{GRAD.DUMMY} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(pums_chicago}\hlopt{$}\hlstd{SCHL} \hlopt{>} \hlnum{17}\hlstd{,} \hlstr{"grad"}\hlstd{,} \hlstr{"no grad"}\hlstd{)}
+\begin{verbatim}
+## Warning in log(pums_chicago$PINCP): NaNs produced
+\end{verbatim}
 
-\hlcom{#2f Drop the variable SERIALNO from the dataset.}
-\hlstd{pums_chicago}\hlopt{$}\hlstd{SERIALNO} \hlkwb{<-} \hlkwa{NULL}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#2e Create a new variable GRAD.DUMMY that takes the value “grad” if the respondent has any post-high school education, and “no grad” otherwise. Use the SCHL variable. }
+\NormalTok{pums_chicago}\OperatorTok{$}\NormalTok{GRAD.DUMMY <-}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(pums_chicago}\OperatorTok{$}\NormalTok{SCHL }\OperatorTok{>}\StringTok{ }\DecValTok{17}\NormalTok{, }\StringTok{"grad"}\NormalTok{, }\StringTok{"no grad"}\NormalTok{)}
 
-\hlcom{#2g Save your new dataset to a csv ???le in the working directory.}
-\hlkwd{write.csv}\hlstd{(pums_chicago,}\hlstr{'editedPUMS_CHICAGO.csv'}\hlstd{)}
+\CommentTok{#2f Drop the variable SERIALNO from the dataset.}
+\NormalTok{pums_chicago}\OperatorTok{$}\NormalTok{SERIALNO <-}\StringTok{ }\OtherTok{NULL}
 
-\hlcom{#2h Use the variable ESR, create 5 new dataframes: under 16, employed, unemployed, in the armed forces, and not in the labor force.}
-\hlstd{under16} \hlkwb{<-} \hlstd{pums_chicago[pums_chicago}\hlopt{$}\hlstd{ESR} \hlopt{==} \hlstr{"NA"}\hlstd{, ]}
-\hlstd{employed} \hlkwb{<-} \hlstd{pums_chicago[pums_chicago}\hlopt{$}\hlstd{ESR} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"1"}\hlstd{,} \hlstr{"2"}\hlstd{), ]}
-\hlstd{unemployed} \hlkwb{<-} \hlstd{pums_chicago[pums_chicago}\hlopt{$}\hlstd{ESR} \hlopt{%in%} \hlstr{"3"}\hlstd{, ]}
-\hlstd{armedforces} \hlkwb{<-} \hlstd{pums_chicago[pums_chicago}\hlopt{$}\hlstd{ESR} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"4"}\hlstd{,} \hlstr{"5"}\hlstd{), ]}
-\hlstd{notinlaborforce} \hlkwb{<-} \hlstd{pums_chicago[pums_chicago}\hlopt{$}\hlstd{ESR} \hlopt{%in%} \hlstr{"6"}\hlstd{, ]}
+\CommentTok{#2g Save your new dataset to a csv ﬁle in the working directory.}
+\KeywordTok{write.csv}\NormalTok{(pums_chicago,}\StringTok{'editedPUMS_CHICAGO.csv'}\NormalTok{)}
 
-\hlcom{#2i Create a new dataframe that combines employed people and people in the armed forces. }
-\hlstd{employed_af} \hlkwb{<-} \hlstd{pums_chicago[pums_chicago}\hlopt{$}\hlstd{ESR} \hlopt{%in%} \hlkwd{c}\hlstd{(}\hlstr{"1"}\hlstd{,} \hlstr{"2"}\hlstd{,} \hlstr{"4"}\hlstd{,} \hlstr{"5"}\hlstd{), ]}
+\CommentTok{#2h Use the variable ESR, create 5 new dataframes: under 16, employed, unemployed, in the armed forces, and not in the labor force.}
+\NormalTok{under16 <-}\StringTok{ }\NormalTok{pums_chicago[pums_chicago}\OperatorTok{$}\NormalTok{ESR }\OperatorTok{==}\StringTok{ "NA"}\NormalTok{, ]}
+\NormalTok{employed <-}\StringTok{ }\NormalTok{pums_chicago[pums_chicago}\OperatorTok{$}\NormalTok{ESR }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{), ]}
+\NormalTok{unemployed <-}\StringTok{ }\NormalTok{pums_chicago[pums_chicago}\OperatorTok{$}\NormalTok{ESR }\OperatorTok{%in%}\StringTok{ "3"}\NormalTok{, ]}
+\NormalTok{armedforces <-}\StringTok{ }\NormalTok{pums_chicago[pums_chicago}\OperatorTok{$}\NormalTok{ESR }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"4"}\NormalTok{, }\StringTok{"5"}\NormalTok{), ]}
+\NormalTok{notinlaborforce <-}\StringTok{ }\NormalTok{pums_chicago[pums_chicago}\OperatorTok{$}\NormalTok{ESR }\OperatorTok{%in%}\StringTok{ "6"}\NormalTok{, ]}
 
-\hlcom{#2j In your new employed_af dataframe, keep only the variables AGEP, RAC1P, and PINCP_LOG}
-\hlstd{new_employed_af} \hlkwb{<-} \hlstd{pums_chicago[}\hlkwd{c}\hlstd{(}\hlstr{"AGEP"}\hlstd{,} \hlstr{"RAC1P"}\hlstd{,} \hlstr{"PINCP_LOG"}\hlstd{)]}
+\CommentTok{#2i Create a new dataframe that combines employed people and people in the armed forces. }
+\NormalTok{employed_af <-}\StringTok{ }\NormalTok{pums_chicago[pums_chicago}\OperatorTok{$}\NormalTok{ESR }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"1"}\NormalTok{, }\StringTok{"2"}\NormalTok{, }\StringTok{"4"}\NormalTok{, }\StringTok{"5"}\NormalTok{), ]}
 
-\hlcom{#2ki Find the mean, median, and 80th percentile of travel time to work, JWMNP }
-\hlkwd{summary}\hlstd{(pums_chicago}\hlopt{$}\hlstd{JWMNP)}
-\end{alltt}
+\CommentTok{#2j In your new employed_af dataframe, keep only the variables AGEP, RAC1P, and PINCP_LOG}
+\NormalTok{new_employed_af <-}\StringTok{ }\NormalTok{pums_chicago[}\KeywordTok{c}\NormalTok{(}\StringTok{"AGEP"}\NormalTok{, }\StringTok{"RAC1P"}\NormalTok{, }\StringTok{"PINCP_LOG"}\NormalTok{)]}
+
+\CommentTok{#2ki Find the mean, median, and 80th percentile of travel time to work, JWMNP }
+\KeywordTok{summary}\NormalTok{(pums_chicago}\OperatorTok{$}\NormalTok{JWMNP)}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{verbatim}
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
 ##    1.00   20.00   30.00   34.84   45.00  149.00   27668
 \end{verbatim}
-\begin{alltt}
-\hlkwd{quantile}\hlstd{(pums_chicago}\hlopt{$}\hlstd{JWMNP,} \hlkwc{probs}\hlstd{=}\hlnum{0.8}\hlstd{,} \hlkwc{na.rm}\hlstd{=}\hlnum{TRUE}\hlstd{)}
-\end{alltt}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{quantile}\NormalTok{(pums_chicago}\OperatorTok{$}\NormalTok{JWMNP, }\DataTypeTok{probs=}\FloatTok{0.8}\NormalTok{, }\DataTypeTok{na.rm=}\OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{verbatim}
 ## 80% 
 ##  45
 \end{verbatim}
-\begin{alltt}
-\hlcom{#2kii Find the correlation between travel time to work JWMNP and annual wages WAGP }
-\hlkwd{cor}\hlstd{(pums_chicago}\hlopt{$}\hlstd{JWMNP, pums_chicago}\hlopt{$}\hlstd{WAGP,} \hlkwc{use}\hlstd{=}\hlstr{"complete.obs"}\hlstd{)}
-\end{alltt}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#2kii Find the correlation between travel time to work JWMNP and annual wages WAGP }
+\KeywordTok{cor}\NormalTok{(pums_chicago}\OperatorTok{$}\NormalTok{JWMNP, pums_chicago}\OperatorTok{$}\NormalTok{WAGP, }\DataTypeTok{use=}\StringTok{"complete.obs"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{verbatim}
 ## [1] -0.04205232
 \end{verbatim}
-\begin{alltt}
-\hlcom{#2kiii Make a scatterplot of age and log income.}
-\hlcom{#2kiv Export this graph to your working directory in pdf format.}
-\hlkwd{pdf}\hlstd{(}\hlstr{"ageonLogincome.pdf"}\hlstd{)}
-\hlkwd{plot}\hlstd{(pums_chicago}\hlopt{$}\hlstd{AGEP, pums_chicago}\hlopt{$}\hlstd{PINCP_LOG,} \hlkwc{main}\hlstd{=}\hlstr{"age on log income"}\hlstd{)}
-\hlkwd{dev.off}\hlstd{()}
-\end{alltt}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#2kiii Make a scatterplot of age and log income.}
+\CommentTok{#2kiv Export this graph to your working directory in pdf format.}
+\KeywordTok{pdf}\NormalTok{(}\StringTok{"ageonLogincome.pdf"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(pums_chicago}\OperatorTok{$}\NormalTok{AGEP, pums_chicago}\OperatorTok{$}\NormalTok{PINCP_LOG, }\DataTypeTok{main=}\StringTok{"age on log income"}\NormalTok{)}
+\KeywordTok{dev.off}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{verbatim}
 ## pdf 
 ##   2
 \end{verbatim}
-\begin{alltt}
-\hlcom{#2kv Create a crosstab of employment status ESR by race RAC1P}
-\hlkwd{install.packages}\hlstd{(}\hlstr{"gmodels"}\hlstd{)}
-\end{alltt}
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#2kv Create a crosstab of employment status ESR by race RAC1P}
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"gmodels"}\NormalTok{, }\DataTypeTok{repos =} \StringTok{"http://cran.us.r-project.org"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Installing package into 'C:/Users/James/Documents/R/win-library/3.5'\\\#\# (as 'lib' is unspecified)}}\begin{verbatim}
+\begin{verbatim}
+## Installing package into 'C:/Users/James/Documents/R/win-library/3.5'
+## (as 'lib' is unspecified)
+\end{verbatim}
+
+\begin{verbatim}
 ## package 'gmodels' successfully unpacked and MD5 sums checked
 ## 
 ## The downloaded binary packages are in
-## 	C:\Users\James\AppData\Local\Temp\RtmpMNzEZK\downloaded_packages
+##  C:\Users\James\AppData\Local\Temp\Rtmp4c1HYH\downloaded_packages
 \end{verbatim}
-\begin{alltt}
-\hlkwd{library}\hlstd{(}\hlstr{"gmodels"}\hlstd{)}
-\hlkwd{CrossTable}\hlstd{(pums_chicago}\hlopt{$}\hlstd{ESR, pums_chicago}\hlopt{$}\hlstd{RAC1P)}
-\end{alltt}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(}\StringTok{"gmodels"}\NormalTok{)}
+\KeywordTok{CrossTable}\NormalTok{(pums_chicago}\OperatorTok{$}\NormalTok{ESR, pums_chicago}\OperatorTok{$}\NormalTok{RAC1P)}
+\end{Highlighting}
+\end{Shaded}
+
 \begin{verbatim}
 ## 
 ##  
@@ -325,117 +418,74 @@ The results below are generated from an R script.
 ## 
 ## 
 \end{verbatim}
-\begin{alltt}
-\hlcom{#2kvi Estimate a linear regression of annual wages WAGP on hours worked per week WKHP }
-\hlstd{wagp_on_wkhp} \hlkwb{<-} \hlkwd{lm}\hlstd{(WAGP} \hlopt{~} \hlstd{WKHP, pums_chicago)}
 
-\hlcom{#2kvii Plot the residuals from this regression against the ???tted values. What does this show?}
-\hlcom{#This shows that residuals tend to decrease as the fitted values increase. Furthermore, we can observe that there are only a small number of large deviations for any given fitted value.}
-\hlstd{wagp_on_wkhp_res} \hlkwb{<-} \hlkwd{resid}\hlstd{(wagp_on_wkhp)}
-\hlstd{wagp_on_wkhp_fitted} \hlkwb{<-} \hlkwd{fitted}\hlstd{(wagp_on_wkhp)}
-\hlkwd{plot}\hlstd{(wagp_on_wkhp_fitted, wagp_on_wkhp_res,}
-     \hlkwc{ylab} \hlstd{=} \hlstr{"Residuals"}\hlstd{,} \hlkwc{xlab}\hlstd{=}\hlstr{"Fitted"}\hlstd{,}
-     \hlkwc{main} \hlstd{=} \hlstr{"Residuals on Fitted"}\hlstd{)}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#2kvi Estimate a linear regression of annual wages WAGP on hours worked per week WKHP }
+\NormalTok{wagp_on_wkhp <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(WAGP }\OperatorTok{~}\StringTok{ }\NormalTok{WKHP, pums_chicago)}
 
-\hlcom{#2li Estimate a linear regression of miles per gallon on weight }
-\hlkwd{data}\hlstd{(mtcars)}
-\hlstd{car_lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(mpg} \hlopt{~} \hlstd{wt, mtcars)}
+\CommentTok{#2kvii Plot the residuals from this regression against the ﬁtted values. What does this show?}
+\CommentTok{#This shows that residuals tend to decrease as the fitted values increase. Furthermore, we can observe that there are only a small number of large deviations for any given fitted value.}
+\NormalTok{wagp_on_wkhp_res <-}\StringTok{ }\KeywordTok{resid}\NormalTok{(wagp_on_wkhp)}
+\NormalTok{wagp_on_wkhp_fitted <-}\StringTok{ }\KeywordTok{fitted}\NormalTok{(wagp_on_wkhp)}
+\KeywordTok{plot}\NormalTok{(wagp_on_wkhp_fitted, wagp_on_wkhp_res, }
+     \DataTypeTok{ylab =} \StringTok{"Residuals"}\NormalTok{, }\DataTypeTok{xlab=}\StringTok{"Fitted"}\NormalTok{,}
+     \DataTypeTok{main =} \StringTok{"Residuals on Fitted"}\NormalTok{)}
 
-\hlcom{#2lii Estimate this regression separately for manual versus automatic transition }
-\hlstd{autoData} \hlkwb{<-} \hlstd{mtcars[mtcars}\hlopt{$}\hlstd{am} \hlopt{==} \hlstr{"0"}\hlstd{,]}
-\hlstd{manualData} \hlkwb{<-} \hlstd{mtcars[mtcars}\hlopt{$}\hlstd{am} \hlopt{==} \hlstr{"1"}\hlstd{,]}
-\hlstd{autocar_lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(mpg} \hlopt{~} \hlstd{wt, mtcars)}
-\hlstd{manualcar_lm} \hlkwb{<-} \hlkwd{lm}\hlstd{(mpg} \hlopt{~} \hlstd{wt, mtcars)}
+\CommentTok{#2li Estimate a linear regression of miles per gallon on weight }
+\KeywordTok{data}\NormalTok{(mtcars)}
+\NormalTok{car_lm <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(mpg }\OperatorTok{~}\StringTok{ }\NormalTok{wt, mtcars)}
 
-\hlcom{#2liii Estimate a regression of miles per gallon on the log of horsepower. }
-\hlstd{mtcars}\hlopt{$}\hlstd{log.hp} \hlkwb{<-} \hlkwd{log}\hlstd{(mtcars}\hlopt{$}\hlstd{hp)}
-\hlstd{mpg_on_lg.hp} \hlkwb{<-} \hlkwd{lm}\hlstd{(mpg} \hlopt{~} \hlstd{log.hp, mtcars)}
+\CommentTok{#2lii Estimate this regression separately for manual versus automatic transition }
+\NormalTok{autoData <-}\StringTok{ }\NormalTok{mtcars[mtcars}\OperatorTok{$}\NormalTok{am }\OperatorTok{==}\StringTok{ "0"}\NormalTok{,]}
+\NormalTok{manualData <-}\StringTok{ }\NormalTok{mtcars[mtcars}\OperatorTok{$}\NormalTok{am }\OperatorTok{==}\StringTok{ "1"}\NormalTok{,]}
+\NormalTok{autocar_lm <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(mpg }\OperatorTok{~}\StringTok{ }\NormalTok{wt, mtcars)}
+\NormalTok{manualcar_lm <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(mpg }\OperatorTok{~}\StringTok{ }\NormalTok{wt, mtcars)}
 
-\hlcom{#2mi Make a scatterplot of weight against miles per gallon. }
-\hlcom{#2mii Color the points in your graph according to the transmission of the vehicle. }
-\hlcom{#2miii Change the shape of the points to correspond to the number of forward gears in the vehicle.}
-\hlcom{#2miv Change the x and y labels on the plot to make full words. }
-\hlcom{#2mv Change the background of the plot so that the panel background is not gray.}
-\hlkwd{install.packages}\hlstd{(}\hlstr{"ggplot2"}\hlstd{)}
-\end{alltt}
+\CommentTok{#2liii Estimate a regression of miles per gallon on the log of horsepower. }
+\NormalTok{mtcars}\OperatorTok{$}\NormalTok{log.hp <-}\StringTok{ }\KeywordTok{log}\NormalTok{(mtcars}\OperatorTok{$}\NormalTok{hp)}
+\NormalTok{mpg_on_lg.hp <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(mpg }\OperatorTok{~}\StringTok{ }\NormalTok{log.hp, mtcars)}
 
+\CommentTok{#2mi Make a scatterplot of weight against miles per gallon. }
+\CommentTok{#2mii Color the points in your graph according to the transmission of the vehicle. }
+\CommentTok{#2miii Change the shape of the points to correspond to the number of forward gears in the vehicle.}
+\CommentTok{#2miv Change the x and y labels on the plot to make full words. }
+\CommentTok{#2mv Change the background of the plot so that the panel background is not gray.}
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"ggplot2"}\NormalTok{, }\DataTypeTok{repos =} \StringTok{"http://cran.us.r-project.org"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Installing package into 'C:/Users/James/Documents/R/win-library/3.5'\\\#\# (as 'lib' is unspecified)}}\begin{verbatim}
+\begin{verbatim}
+## Installing package into 'C:/Users/James/Documents/R/win-library/3.5'
+## (as 'lib' is unspecified)
+\end{verbatim}
+
+\begin{verbatim}
 ## package 'ggplot2' successfully unpacked and MD5 sums checked
 ## 
 ## The downloaded binary packages are in
-## 	C:\Users\James\AppData\Local\Temp\RtmpMNzEZK\downloaded_packages
+##  C:\Users\James\AppData\Local\Temp\Rtmp4c1HYH\downloaded_packages
 \end{verbatim}
-\begin{alltt}
-\hlkwd{library}\hlstd{(ggplot2)}
-\end{alltt}
-\end{kframe}
 
-{\centering \includegraphics[width=.6\linewidth]{figure/HW0-Final-Rnwauto-report-1} 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
 
-}
+\includegraphics{HW0_Final_files/figure-latex/unnamed-chunk-1-1.pdf}
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(mtcars)}\OperatorTok{+}\StringTok{ }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ mpg, }\DataTypeTok{y =}\NormalTok{ wt, }
+                                         \DataTypeTok{color =}\NormalTok{ mtcars}\OperatorTok{$}\NormalTok{am, }
+                                         \DataTypeTok{shape =}\NormalTok{ mtcars}\OperatorTok{$}\NormalTok{gear)) }\OperatorTok{+}\StringTok{ }\KeywordTok{scale_shape_identity}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Weight on Miles per Gallon"}\NormalTok{, }\DataTypeTok{x =} \StringTok{"Miles per Gallon"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Weight"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{panel.background =} \KeywordTok{element_rect}\NormalTok{(}\DataTypeTok{fill =} \StringTok{"lightyellow"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
 
-\begin{kframe}\begin{alltt}
-\hlkwd{ggplot}\hlstd{(mtcars)}\hlopt{+} \hlkwd{geom_point}\hlstd{(}\hlkwc{mapping} \hlstd{=} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= mpg,} \hlkwc{y} \hlstd{= wt,}
-                                         \hlkwc{color} \hlstd{= mtcars}\hlopt{$}\hlstd{am,}
-                                         \hlkwc{shape} \hlstd{= mtcars}\hlopt{$}\hlstd{gear))} \hlopt{+} \hlkwd{scale_shape_identity}\hlstd{()} \hlopt{+}
-  \hlkwd{labs}\hlstd{(}\hlkwc{title} \hlstd{=} \hlstr{"Weight on Miles per Gallon"}\hlstd{,} \hlkwc{x} \hlstd{=} \hlstr{"Miles per Gallon"}\hlstd{,} \hlkwc{y} \hlstd{=} \hlstr{"Weight"}\hlstd{)} \hlopt{+}
-  \hlkwd{theme}\hlstd{(}\hlkwc{panel.background} \hlstd{=} \hlkwd{element_rect}\hlstd{(}\hlkwc{fill} \hlstd{=} \hlstr{"lightyellow"}\hlstd{))}
-\end{alltt}
-\end{kframe}
-
-{\centering \includegraphics[width=.6\linewidth]{figure/HW0-Final-Rnwauto-report-2} 
-
-}
-
-
-
-\end{knitrout}
-
-The R session information (including the OS info, R version and all
-packages used):
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{sessionInfo}\hlstd{()}
-\end{alltt}
-\begin{verbatim}
-## R version 3.5.3 (2019-03-11)
-## Platform: x86_64-w64-mingw32/x64 (64-bit)
-## Running under: Windows >= 8 x64 (build 9200)
-## 
-## Matrix products: default
-## 
-## locale:
-## [1] LC_COLLATE=English_United States.1252  LC_CTYPE=English_United States.1252   
-## [3] LC_MONETARY=English_United States.1252 LC_NUMERIC=C                          
-## [5] LC_TIME=English_United States.1252    
-## 
-## attached base packages:
-## [1] stats     graphics  grDevices utils     datasets  methods   base     
-## 
-## other attached packages:
-## [1] ggplot2_3.1.1  gmodels_2.18.1 knitr_1.22    
-## 
-## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.1       magrittr_1.5     MASS_7.3-51.1    tidyselect_0.2.5 munsell_0.5.0   
-##  [6] colorspace_1.4-1 R6_2.4.0         rlang_0.3.3      dplyr_0.8.0.1    stringr_1.4.0   
-## [11] highr_0.8        plyr_1.8.4       tools_3.5.3      grid_3.5.3       gtable_0.3.0    
-## [16] xfun_0.6         withr_2.1.2      gtools_3.8.1     digest_0.6.18    assertthat_0.2.1
-## [21] yaml_2.2.0       lazyeval_0.2.2   tibble_2.1.1     crayon_1.3.4     purrr_0.3.2     
-## [26] glue_1.3.1       evaluate_0.13    labeling_0.3     gdata_2.18.0     stringi_1.4.3   
-## [31] compiler_3.5.3   pillar_1.3.1     scales_1.0.0     pkgconfig_2.0.2
-\end{verbatim}
-\begin{alltt}
-\hlkwd{Sys.time}\hlstd{()}
-\end{alltt}
-\begin{verbatim}
-## [1] "2019-04-13 18:14:45 CDT"
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+\includegraphics{HW0_Final_files/figure-latex/unnamed-chunk-1-2.pdf}
 
 
 \end{document}

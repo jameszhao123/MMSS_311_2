@@ -110,7 +110,7 @@ plot(pums_chicago$AGEP, pums_chicago$PINCP_LOG, main="age on log income")
 dev.off()
 
 #2kv Create a crosstab of employment status ESR by race RAC1P
-install.packages("gmodels")
+install.packages("gmodels", repos = "http://cran.us.r-project.org")
 library("gmodels")
 CrossTable(pums_chicago$ESR, pums_chicago$RAC1P)
 
@@ -144,7 +144,7 @@ mpg_on_lg.hp <- lm(mpg ~ log.hp, mtcars)
 #2miii Change the shape of the points to correspond to the number of forward gears in the vehicle.
 #2miv Change the x and y labels on the plot to make full words. 
 #2mv Change the background of the plot so that the panel background is not gray.
-install.packages("ggplot2")
+install.packages("ggplot2", repos = "http://cran.us.r-project.org")
 library(ggplot2)
 ggplot(mtcars)+ geom_point(mapping = aes(x = mpg, y = wt, 
                                          color = mtcars$am, 
