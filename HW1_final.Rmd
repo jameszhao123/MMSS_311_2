@@ -1,123 +1,200 @@
+---
+title: "HW1"
+author: "James Zhao"
+date: "April 17, 2019"
+output: html_document
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Q1 - Regression
+##OLS
+
+###a)
+```{r}
 setwd("~/GitHub/MMSS_311_2")
-
-#Q1 OLS
 sick <- read.csv("sick_data.csv")
 sick$RESULT.DUMMY <- ifelse (sick$result == "Positive", 1, 0)
 OLS <- lm(RESULT.DUMMY~temp+bp, data = sick)
 summary(OLS)
+```
+
+###b)
+```{r}
+
 sick$PREDICTED.VALUE <- fitted(OLS)
 sick$PREDICTED.OUTCOME <- ifelse(sick$PREDICTED.VALUE >= 0.5, "Positive", "Negative")
 sick$PREDICTED.ACCURACY <- ifelse(sick$PREDICTED.OUTCOME == sick$result, 1, 0)
 accuracy.ols <- mean(sick$PREDICTED.ACCURACY)
 accuracy.ols
-#The OLS regression correctly predicts the results 96.4% of the time.
+```
+The OLS regression correctly predicts the results 96.4% of the time.
 
-#Q1c OLS: The equation of the line is -5.7134563 + 0.00628185temp - 0.0082865bp = 0
+###c) The equation of the line is -5.7134563 + 0.00628185temp - 0.0082865bp = 0
 
+###d)
+```{r}
 library(ggplot2) 
 ggplot(sick, aes(temp, bp)) + 
   geom_point()+
   geom_point(aes(colour = factor(result)))+
   geom_abline(intercept = -689.1506, slope = 7.580824232)
+```
 
-#Q1 Logit
+##Logit
+
+###a)
+```{r}
 logit <- glm(RESULT.DUMMY ~ temp+bp, data = sick, family = binomial)
 summary(logit)
+```
+
+###b)
+```{r}
 sick$PREDICTED.VALUE.LOGIT <- fitted(logit)
 sick$PREDICTED.OUTCOME.LOGIT <- ifelse(sick$PREDICTED.VALUE.LOGIT >= 0.5, "Positive", "Negative")
 sick$PREDICTED.ACCURACY.LOGIT <- ifelse(sick$PREDICTED.OUTCOME.LOGIT == sick$result, 1, 0)
 accuracy.logit <- mean(sick$PREDICTED.ACCURACY.LOGIT)
 accuracy.logit
-#The Logit regression correctly predicts the results 99.2% of the time.
+```
+The Logit regression correctly predicts the results 99.2% of the time.
 
-#Q1c Logit: The equation of the line is bp = 6.612235temp - 571.0099.
+###c)
+The equation of the line is bp = 6.612235temp - 571.0099.
 
+###d)
+```{r}
 library(ggplot2) 
 ggplot(sick, aes(temp, bp)) + 
   geom_point()+
   geom_point(aes(colour = factor(result)))+
   geom_abline(intercept = -571.0099, slope = 6.612235)
+```
 
+#Q2 Regularization/Selection
 
-#Q2 RIDGE
+###a)
+```{r}
+setwd("~/GitHub/MMSS_311_2")
 widget <- read.csv("widget_data.csv")
-plot (widget$y)
-install.packages("tidyverse")
-install.packages("broom")
-install.packages("glmnet")
 library(tidyverse)
 library(broom)
 library(glmnet)
+plot (widget$y)
+```
 
+##Ridge
+###b)
+```{r}
 x <- model.matrix(y~., widget)[,-1]
 
 grid = seq(1/100, 100, length = 31)
 ridge_mod = glmnet(x, widget$y, alpha = 0, lambda = grid)
+ridge_mod
+```
+
+###c)
+```{r}
 useful_ridge_mod <- tidy (ridge_mod)
 ggplot(useful_ridge_mod, aes(lambda, estimate)) + geom_line()
+```
+
+###d)
+```{r}
 cv_ridge_mod <- cv.glmnet(x, widget$y, alpha = 0)$lambda.min
 cv_ridge_mod
 lambda_min_ridge_mod = glmnet(x, widget$y, alpha = 0, lambda = cv_ridge_mod)
 summary (lambda_min_ridge_mod)
-#how to find coefficients i get when using this lambda?
+```
+The coefficients are printed in the summary when using the value of lambda that minimizes the mean squared error.
 
-#Q2 LASSO
+##Lasso
+###b)
+```{r}
 x <- model.matrix(y~., widget)[,-1]
 
 grid = seq(1/100, 100, length = 31)
 lasso_mod = glmnet(x, widget$y, alpha = 1, lambda = grid)
+lasso_mod
+```
+
+###c)
+```{r}
 useful_lasso_mod <- tidy (lasso_mod)
 ggplot(useful_lasso_mod, aes(lambda, estimate)) + geom_line()
+```
+
+###d)
+```{r}
 cv_lasso_mod <- cv.glmnet(x, widget$y, alpha = 1)$lambda.min
 cv_lasso_mod
 lambda_min_lasso_mod = glmnet(x, widget$y, alpha = 1, lambda = cv_lasso_mod)
 summary(lambda_min_lasso_mod)
-#how to find coefficients i get when using this lambda?
+```
+The coefficients are printed in the summary when using the value of lambda that minimizes the mean squared error.
 
-#Q3 SVM
+###f)
+As can be seen from the 2 plots, the variation in estimates when using different values of lambda are significantly higher for the ridge regression as compared to the lasso regression. As such, the ridge regression is likely to be less useful than the lasso regression because of this high varition in estimated values depending on lambda.
+
+#Q3 Classification
+###a)
+```{r}
 pol <- read.csv("pol_data.csv")
-install.packages("caret")
-install.packages("e1071")
 library("caret")
 library(e1071)
+library("kernlab")
 
 set.seed(1)
 split=2/3
 trainIndex <- createDataPartition(pol$group, p=split, list=FALSE)
 train <- pol[ trainIndex,]
 test <- pol[-trainIndex,]
+```
 
+##SVM
+###b)
+```{r}
 trctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 3)
-set.seed(3233)
+set.seed(1)
 
-svm_Linear <- train(V14 ~., data = training, method = "svmLinear",
+svm_Linear <- train(group ~., data = train, method = "svmLinear",
                     trControl=trctrl,
                     preProcess = c("center", "scale"),
                     tuneLength = 10)
+svm_Linear
+```
 
-svmfit=svm(group~., data=pol , kernel ="linear", cost=10, scale=FALSE)
-summary(svmfit)
+###c)
+```{r}
+test_pred_svm <- predict(svm_Linear, newdata = test)
+print(test_pred_svm)
+```
+
+###d)
+```{r}
+confusionMatrix(test_pred_svm, test$group)
+table(test_pred_svm, test$group)
+```
 
 
-#Q3 NB
+##Naive Bayes
+###b)
+```{r}
+NBclassifier=naiveBayes(group~., data=train)
+print(NBclassifier)
+```
 
-NBclassfier=naiveBayes(group~pol_margin+col_degree+house_income, data=train)
-print(NBclassfier)
+###c)
+```{r}
+pred_NB <- predict(NBclassifier, test)
+print(pred_NB)
+```
 
-printALL=function(model){
-  trainPred=predict(model, newdata = train, type = "class")
-  trainTable=table(train$group, trainPred)
-  testPred=predict(NBclassfier, newdata=test, type="class")
-  testTable=table(test$group, testPred)
-  trainAcc=(trainTable[1,1]+trainTable[2,2]+trainTable[3,3])/sum(trainTable)
-  testAcc=(testTable[1,1]+testTable[2,2]+testTable[3,3])/sum(testTable)
-  message("Contingency Table for Training Data")
-  print(trainTable)
-  message("Contingency Table for Test Data")
-  print(testTable)
-  message("Accuracy")
-  print(round(cbind(trainAccuracy=trainAcc, testAccuracy=testAcc),3))
-}
-printALL(NBclassfier)
+###d)
+```{r}
+confusionMatrix(pred_NB, test$group)
+table(pred_NB, test$group)
+```
 
