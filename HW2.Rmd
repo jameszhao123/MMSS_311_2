@@ -1,0 +1,61 @@
+---
+title: "HW2"
+author: "James Zhao"
+date: "April 24, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Q1 Data Collection
+##1.1 Scraping
+
+```{r}
+setwd("~/GitHub/MMSS_311_2")
+library("xml2")
+library("rvest")
+pg <- read_html("https://en.wikipedia.org/wiki/Category:Member_states_of_the_Association_of_Southeast_Asian_Nations")
+
+countrypg <- pg %>%
+  html_nodes(".mw-category-group+ .mw-category-group a") %>%
+  html_text()
+head(countrypg)
+
+```
+
+html_text() %>%
+html_table() %>%
+html_attr
+
+#Q2 Pre-Processing & Word Frequency Analysis
+##Q2.1 Pre-Process
+```{r}
+library(tm)
+tweets <- read.csv("trumptweets.csv")
+trumptweets <- Corpus(VectorSource(tweets$text))
+trumptweets <- tm_map(trumptweets, removePunctuation)
+trumptweets <- tm_map(trumptweets, tolower)
+trumptweets <- tm_map(trumptweets, removeWords, stopwords("en"))
+
+trumptweets <- tm_map(trumptweets,stemDocument)
+
+dtm <- DocumentTermMatrix(trumptweets)
+dtm.mat <- as.matrix(dtm)
+dtm.mat
+
+dtm <- removeSparseTerms(dtm,.1)
+
+library(tidyverse)
+library(tidytext)
+
+dtm_tfidf <- DocumentTermMatrix(trumptweets, control = list(weighting = weightTfIdf))
+```
+
+##Q2.2
+###(a)
+```{r}
+
+```
+
