@@ -18,10 +18,15 @@ library("xml2")
 library("rvest")
 pg <- read_html("https://en.wikipedia.org/wiki/Category:Member_states_of_the_Association_of_Southeast_Asian_Nations")
 
+
 countrypg <- pg %>%
   html_nodes(".mw-category-group+ .mw-category-group a") %>%
   html_text()
 head(countrypg)
+
+countryurl <- pg %>%
+  html_nodes(".mw-category-group+ .mw-category-group a") %>%
+  html_attr("href")
 
 ```
 
