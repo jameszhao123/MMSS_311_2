@@ -16,17 +16,27 @@ knitr::opts_chunk$set(echo = TRUE)
 setwd("~/GitHub/MMSS_311_2")
 library("xml2")
 library("rvest")
+library("dplyr")
 pg <- read_html("https://en.wikipedia.org/wiki/Category:Member_states_of_the_Association_of_Southeast_Asian_Nations")
 
 
-countrypg <- pg %>%
+countrytext <- pg %>%
   html_nodes(".mw-category-group+ .mw-category-group a") %>%
   html_text()
-head(countrypg)
+countrytext
 
 countryurl <- pg %>%
   html_nodes(".mw-category-group+ .mw-category-group a") %>%
   html_attr("href")
+countryurl
+
+data <- data.frame(
+  countrytext, countryurl, 
+  stringsAsFactors = F) %>%
+  mutate(countryurl = paste0("https://en.wikipedia.org", countryurl))
+head(data)
+
+
 
 ```
 
@@ -50,7 +60,7 @@ dtm <- DocumentTermMatrix(trumptweets)
 dtm.mat <- as.matrix(dtm)
 dtm.mat
 
-dtm <- removeSparseTerms(dtm,.1)
+dtm <- removeSparseTerms(dtm,.99)
 
 library(tidyverse)
 library(tidytext)
