@@ -1,0 +1,117 @@
+---
+title: "HW3"
+author: "James Zhao"
+date: "May 12, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Q1 Distance/Similarity
+##1.1 Using either the tidytext or tm package, create a document-term matrix. 
+```{r}
+packages <- c("dplyr", "ggplot2", "lubridate", "stringr", "foreign", "xml2", "rvest", "tm", "tidytext", "proxy", "viridis", "fields", "mixtools")
+load.packages <- function(x) {
+  if (!require(x, character.only = TRUE)) {
+    install.packages(x, dependencies = TRUE)
+    library(x, character.only = TRUE)
+  }
+}
+lapply(packages, load.packages)
+```
+
+```{r}
+setwd("~/GitHub/MMSS_311_2")
+
+manifesto <- read_csv("manifestos.csv")
+docs.manifesto <- Corpus(VectorSource(manifesto$text)) %>% 
+  tm_map(removePunctuation) %>%
+  tm_map(removeNumbers) %>%
+  tm_map(content_transformer(tolower)) %>%
+  tm_map(removeWords, stopwords('english')) %>%
+  tm_map(stemDocument) %>%
+  tm_map(stripWhitespace)
+dtm.manifesto <- DocumentTermMatrix(docs.manifesto) %>% as.matrix()
+
+```
+
+##1.2 Using the dist function from the proxy package, measure the Euclidean distance between documents; present your results either in a table or graphically. Which party manifestos are "closest"?
+
+```{r}
+euc.dis <- dist(dtm.manifesto)
+euc.dis.mat <- as.matrix(euc.dis)
+print(euc.dis.mat)
+```
+
+##1.3 Measure cosine distance between documents; present your results in the same way. Which party manifestos are "closest" by this measure? 
+
+```{r}
+cos.dis <- dist(dtm.manifesto, method="cosine")
+cos.dis.mat <- as.matrix(cos.dis)
+print(cos.dis.mat)
+```
+
+##1.4
+
+#Q2 Clustering
+##2.1 The Deparment has a budget for two facilities. Use k-means to cluster the calls based on their Latitude and Longitude, starting with k =2. (Remove observations with no Latitude or Longitude.) Create a new factor column on the dataset with these cluster assignments. 
+```{r}
+sanreq <- read.csv("311_sanitation_requests_2019.csv", header=T, stringsAsFactors = F)
+set.seed(151)
+sanreq_clusters <- kmeans(select(sanreq, -c(X, Longitude, Latitude)),, 2, nstart = 50)
+sanreq_clusters
+```
+
+##2.2 Create a table of these assignments against the boroughs where calls come from. Do the clusters match political boundaries? What boroughs are split up?
+
+```{r}
+
+```
+
+##2.3 Plot the calls by latitude / longitude, and color the points by cluster. HINT: there are many points, so reducing the point size to 0.5 and alpha to 0.1 is a good idea. 
+
+```{r}
+
+```
+
+##2.4 Add the centroids of the clusters to the map. HINT: if your model object is called kmod, then you can use as.data.frame(kmod$centers) to get a new dataframe of centroids to add to the plot. 
+
+```{r}
+
+```
+
+##2.5 There have been so many calls that you've received a budget increase, and can now have three facilities. Repeat the previous steps, but set k =3. 
+
+```{r}
+
+```
+
+##2.6a  Write a loop that... a. Generates cluster assignments for k =1,2,...,15, saving each new column to the dataframe. HINT: to create column names dynamically based on i (for example, k1 for i = 1, k2 for i = 2, etc), you can use syntax like this: dat[[paste0("k", i)]] <- myvector 
+
+```{r}
+
+```
+
+##2.6b  Calculates the total within-cluster sum of squares, saving it to a separate vector.
+
+```{r}
+
+```
+
+##2.7 Create an elbow plot assessing what an optimal value for k should be in this analysis. What do you ???nd? Since each new facility is expensive to create, what is your recommended number of facilities?
+```{r}
+
+```
+
+##2.8 Make a ???nal plot of the calls as in part 3, with your preferred clustering / number of facilities. 
+```{r}
+
+```
+
+##2.9  K-Means clustering uses Euclidian distance. Why might that miss important aspects of this question?
+```{r}
+
+```
+
