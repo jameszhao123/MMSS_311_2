@@ -1,0 +1,84 @@
+---
+title: "HW4"
+author: "James Zhao"
+date: "May 21, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Q1 For this problem, use the dataset of death row statements from Texas inmates. 
+
+##Q1.1 Import the data, pre-process it, and set up a DTM. For this analysis, do not remove sparse terms, but do remove people who gave no statement.
+```{r results=}
+packages <- c("dplyr", "ggplot2", "lubridate", "stringr", "foreign", "xml2", "rvest", "tm", "tidytext", "proxy", "viridis", "fields", "mixtools", "tidyr", "topicmodels", "stm")
+load.packages <- function(x) {
+  if (!require(x, character.only = TRUE)) {
+    install.packages(x, dependencies = TRUE)
+    library(x, character.only = TRUE)
+  }
+}
+lapply(packages, load.packages)
+
+tx <- read.csv("tx_deathrow_full.csv")
+statement <- Corpus(VectorSource(tx$Last.Statement)) %>% 
+  tm_map(removePunctuation) %>%
+  tm_map(removeNumbers) %>%
+  tm_map(content_transformer(tolower)) %>%
+  tm_map(removeWords, stopwords('english')) %>%
+  tm_map(stemDocument) %>%
+  tm_map(stripWhitespace)
+dtm.statement <- DocumentTermMatrix(docs.manifesto) %>% as.matrix()
+
+rowTotals <- apply(dtm.statement , 1, sum) #Find the sum of words in each Document
+dtm.statement.new   <- dtm.statement[rowTotals> 0, ]
+
+empty_rows <- which(rowSums(as.matrix(dtm.statement)) == 0)
+```
+
+##Q1.2 Use LDA to assess topics in the statements, with k = 10 topics. Note: this may take a while to run.
+```{r}
+mod.out.10 <- LDA(dtm.statement.new, k=10, control = list(seed=1))
+```
+
+##Q1.3 Use tidy to get the results out of the model. Show the top 10 most likely words in each topic.
+```{r}
+tidy(mod.out.10) %>%
+  group_by(topic) %>%
+  top_n(10,beta) %>%
+  ungroup() %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free_y", nrow = 2) +
+  coord_flip() +
+  xlab("term") +
+  labs(title = "Topic Modeling of Texas Death Row Statements (LDA), k = 10", subtitle = "Top 10 words by topic")
+tidy(mod.out.10)
+```
+
+#Q2
+
+##Q2.1 Set up the DTM from Question 1 to be correctly formatted for use with the stm package. Use the code from lecture or the documentation for the package to assist with this. 
+```{r}
+out <- stm::readCorpus(dtm.statement.new)
+```
+
+##Q2.2 Use stm to fit a structural topic model with 10 topics, conditioning on race. Note: This may take a while to run and produce a lot of output. You can use the chunk option {r, results = "hide"} to omit the output from your knitted pdf file. 
+```{r include=FALSE, results="hide"}
+statement.out <- stm(documents = out$documents, vocab = out$vocab, 10, prevalence = tx$race, data = tx[-empty_rows, ])
+```
+
+##Q2.3 Inspect the topics with summary.
+```{r}
+summary(statement.out)
+tidy(statement.out)
+labelTopics(statement.out)
+
+plot.STM(statement.out, type="summary", xlim=c(0,0.3), n=7)
+```
+
+##Q2.4 Compare your results. How do the topics you find when conditioning on venue differ from those you found using standard LDA?
+
+When we condition on race, we find that the new topics are somewhat race-specific and is related to background of different races. For example, one category focuses on British and ukip, which are related to the UK. By conditioning on race, we are separating groups based on race and each race group may have different topics, which is what we see in the above topic models.

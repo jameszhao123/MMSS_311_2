@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #Q1 Distance/Similarity
 ##1.1 Using either the tidytext or tm package, create a document-term matrix. 
 ```{r}
-packages <- c("dplyr", "ggplot2", "lubridate", "stringr", "foreign", "xml2", "rvest", "tm", "tidytext", "proxy", "viridis", "fields", "mixtools")
+packages <- c("dplyr", "ggplot2", "lubridate", "stringr", "foreign", "xml2", "rvest", "tm", "tidytext", "proxy", "viridis", "fields", "mixtools", "tidyr")
 load.packages <- function(x) {
   if (!require(x, character.only = TRUE)) {
     install.packages(x, dependencies = TRUE)
@@ -25,7 +25,7 @@ lapply(packages, load.packages)
 ```{r}
 setwd("~/GitHub/MMSS_311_2")
 
-manifesto <- read_csv("manifestos.csv")
+manifesto <- read.csv("manifestos.csv")
 docs.manifesto <- Corpus(VectorSource(manifesto$text)) %>% 
   tm_map(removePunctuation) %>%
   tm_map(removeNumbers) %>%
@@ -45,73 +45,156 @@ euc.dis.mat <- as.matrix(euc.dis)
 print(euc.dis.mat)
 ```
 
+Documents 1 and 7 are the closest using Euclidean distance.
+
 ##1.3 Measure cosine distance between documents; present your results in the same way. Which party manifestos are "closest" by this measure? 
 
 ```{r}
 cos.dis <- dist(dtm.manifesto, method="cosine")
 cos.dis.mat <- as.matrix(cos.dis)
 print(cos.dis.mat)
+
 ```
 
+Documents 2 and 4 are the most similar using cosine distance.
+
+
 ##1.4
+
+Euclidean distance only characterizes the absolute distance between 2 points, whereas cosine distance takes into account the angle between the two points as well. We see that for words and manifestos, the "absolute distance" between two points are not sufficient to characterize the differences in manifestos. Therefore, we have to use the cosine distance to more accurately represent the differences in the documents instead of Euclidean distance. FOr manifestos, the language and context of the text matters significantly, so cosine distance gives a far more representative answer to what we are looking for.
 
 #Q2 Clustering
 ##2.1 The Deparment has a budget for two facilities. Use k-means to cluster the calls based on their Latitude and Longitude, starting with k =2. (Remove observations with no Latitude or Longitude.) Create a new factor column on the dataset with these cluster assignments. 
 ```{r}
-sanreq <- read.csv("311_sanitation_requests_2019.csv", header=T, stringsAsFactors = F)
-set.seed(151)
-sanreq_clusters <- kmeans(select(sanreq, -c(X, Longitude, Latitude)),, 2, nstart = 50)
-sanreq_clusters
+sanreq <- read.csv("311_sanitation_requests_2019.csv")
+sanreqcoord <- sanreq[, c("Latitude", "Longitude")] %>%
+  na.omit()
+
+sanreq_clusters <- kmeans(na.omit(select(sanreqcoord, Longitude, Latitude)), 2, nstart = 50)
+
+sanreq.new <- filter(sanreq, !is.na(sanreq$Longitude) | !is.na(sanreq$Latitude))
+
+summary(sanreq_clusters)
+sanreq.new$cluster <- as.factor(sanreq_clusters$cluster)
 ```
 
 ##2.2 Create a table of these assignments against the boroughs where calls come from. Do the clusters match political boundaries? What boroughs are split up?
 
 ```{r}
-
+table(sanreq.new$Borough, sanreq.new$cluster)
 ```
+
+The clusters mostly match the political boundaries. Brooklyn and Manhattan boroughs are split up.
 
 ##2.3 Plot the calls by latitude / longitude, and color the points by cluster. HINT: there are many points, so reducing the point size to 0.5 and alpha to 0.1 is a good idea. 
 
 ```{r}
-
+ggplot(sanreq.new, aes(x = Longitude, y = Latitude, col=cluster)) +
+  geom_point(size = 0.5, alpha = 0.1) + 
+  geom_point() 
 ```
 
 ##2.4 Add the centroids of the clusters to the map. HINT: if your model object is called kmod, then you can use as.data.frame(kmod$centers) to get a new dataframe of centroids to add to the plot. 
 
 ```{r}
+centroids <- as.data.frame(sanreq_clusters$centers)
 
+ggplot(sanreq.new, aes(x = Longitude, y = Latitude, color=cluster)) +
+  geom_point(size = 0.5, alpha = 0.1) + 
+  geom_point() + 
+  geom_point(data = centroids, aes(x= Longitude, y= Latitude, color = "centroid"))
 ```
 
 ##2.5 There have been so many calls that you've received a budget increase, and can now have three facilities. Repeat the previous steps, but set k =3. 
 
 ```{r}
+sanreq_clusters3 <- kmeans(na.omit(select(sanreqcoord, Longitude, Latitude)), 3, nstart = 50)
 
+sanreq.new3 <- filter(sanreq, !is.na(sanreq$Longitude) | !is.na(sanreq$Latitude))
+
+summary(sanreq_clusters3)
+sanreq.new3$cluster <- as.factor(sanreq_clusters3$cluster)
+
+ggplot(sanreq.new3, aes(x = Longitude, y = Latitude, col=cluster)) +
+  geom_point(size = 0.5, alpha = 0.1) + 
+  geom_point() 
+
+centroids3 <- as.data.frame(sanreq_clusters3$centers)
+
+ggplot(sanreq.new3, aes(x = Longitude, y = Latitude, color=cluster)) +
+  geom_point(size = 0.5, alpha = 0.1) + 
+  geom_point() + 
+  geom_point(data = centroids3, aes(x= Longitude, y= Latitude, color = "centroid"))
 ```
 
-##2.6a  Write a loop that... a. Generates cluster assignments for k =1,2,...,15, saving each new column to the dataframe. HINT: to create column names dynamically based on i (for example, k1 for i = 1, k2 for i = 2, etc), you can use syntax like this: dat[[paste0("k", i)]] <- myvector 
+##2.6a  Write a loop that... a. Generates cluster assignments for k =1,2,...,15, saving each new column to the dataframe. HINT: to create column names dynamically based on i (for example, k1 for i = 1, k2 for i = 2, etc), you can use syntax like this: dat[[paste0("k", i)]] <- myvector. 
 
 ```{r}
-
+sanreq.new <- filter(sanreq, !is.na(sanreq$Longitude) | !is.na(sanreq$Latitude))
+for(i in 1:15){
+  sanreq_clusters <- kmeans(na.omit(select(sanreqcoord, Longitude, Latitude)), i, nstart = 50)
+  sanreq.new[[paste0("k", i)]] <- as.factor(sanreq_clusters$cluster)
+}
 ```
 
-##2.6b  Calculates the total within-cluster sum of squares, saving it to a separate vector.
+
+##(b) Calculates the total within-cluster sum of squares, saving it to a separate vector.
 
 ```{r}
-
+wss <- NULL
+for(i in 1:15){
+  sanreq_clusters <- kmeans(na.omit(select(sanreqcoord, Longitude, Latitude)), i, nstart = 50)
+  wss[i] <- sanreq_clusters$tot.withinss
+}
 ```
 
-##2.7 Create an elbow plot assessing what an optimal value for k should be in this analysis. What do you ???nd? Since each new facility is expensive to create, what is your recommended number of facilities?
+##2.7 Create an elbow plot assessing what an optimal value for k should be in this analysis. What do you find? Since each new facility is expensive to create, what is your recommended number of facilities?
 ```{r}
-
+plot(1:15, wss,
+     type = "b", pch = 19, frame = FALSE,
+     xlab = "Number of clusters K",
+     ylab = "Total within-clusters sum of squares")
 ```
 
-##2.8 Make a ???nal plot of the calls as in part 3, with your preferred clustering / number of facilities. 
-```{r}
+We see that after cluster k=4, there are diminishing marginal returns in increasing number of clusters in that the reduction in total within-clusters sum of squares becomes very small. Thus, any added benefit of creating new facilities after k=4 is likely to be not worthwhile. Since facilities are expensive to build, we should simply create 4 facilities to maximize our benefits while keeping costs to a minimum.
 
+##2.8 Make a final plot of the calls as in part 3, with your preferred clustering / number of facilities. 
+```{r}
+sanreq_clusters4 <- kmeans(na.omit(select(sanreqcoord, Longitude, Latitude)), 4, nstart = 50)
+
+sanreq.new4 <- filter(sanreq, !is.na(sanreq$Longitude) | !is.na(sanreq$Latitude))
+
+summary(sanreq_clusters4)
+sanreq.new4$cluster <- as.factor(sanreq_clusters4$cluster)
+
+ggplot(sanreq.new4, aes(x = Longitude, y = Latitude, col=cluster)) +
+  geom_point(size = 0.5, alpha = 0.1) + 
+  geom_point() 
+
+centroids3 <- as.data.frame(sanreq_clusters4$centers)
+
+ggplot(sanreq.new4, aes(x = Longitude, y = Latitude, color=cluster)) +
+  geom_point(size = 0.5, alpha = 0.1) + 
+  geom_point() + 
+  geom_point(data = centroids3, aes(x= Longitude, y= Latitude, color = "centroid"))
 ```
 
 ##2.9  K-Means clustering uses Euclidian distance. Why might that miss important aspects of this question?
-```{r}
 
+Intuititvely, the longitude and latitude of locations are not the only information that determines the distance of a drive from one location to another. For example, there might be a river between point x and y, but Euclidean distance will not be able to take this into account and thus will not account for the longer drive time. Thus, the Euclidean distance method may not be ideal for estimating drive time and where to locate the facilities.
+
+#Q3 Using the EM algorithm implementation in the mixtools package, cluster the 311 Sanitation calls from the k-means question, as though these data contain clusters drawn from 2 multivariate Gaussians. NOTE: randomly filter your results to 500 observations, so the model fits more quickly. 2. Plot your results. 3. Repeat these steps with k =3.
+
+##k=2
+```{r}
+sanreq.sample <- sample_n(sanreq.new, 500)
+mod2 <- mvnormalmixEM(select(sanreq.sample, Latitude, Longitude), k=2)
+plot(mod2, whichplots = 2, xlab2="Latitude", ylab2="Longitude")
+```
+
+##k=3
+```{r}
+mod3 <- mvnormalmixEM(select(sanreq.sample, Latitude, Longitude), k=3)
+plot(mod3, whichplots = 2, xlab2="Latitude", ylab2="Longitude")
 ```
 
