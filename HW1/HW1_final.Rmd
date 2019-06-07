@@ -77,7 +77,7 @@ ggplot(sick, aes(temp, bp)) +
 
 ###a)
 ```{r}
-setwd("~/GitHub/MMSS_311_2")
+setwd("~/GitHub/MMSS_311_2/Data Sets")
 widget <- read.csv("widget_data.csv")
 library(tidyverse)
 library(broom)

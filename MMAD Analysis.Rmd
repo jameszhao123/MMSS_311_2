@@ -1,0 +1,78 @@
+---
+title: "MMAD Analysis"
+author: "James Zhao"
+date: "May 25, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First, we obtain the MMAD even-level dataset and load it as follows.
+
+```{r echo=T, results='hide'}
+setwd("~/GitHub/MMSS_311_2/Data Sets")
+mmad <- read.csv("events.csv")
+mmad <- mmad[,-(1:6)]
+mmad <- na.omit(mmad)
+library(tidyverse)
+library(broom)
+library(glmnet)
+```
+
+We plot the levels of max_partviolence in the dataset.
+
+Then, we run a LASSO regression.
+
+```{r}
+qplot (mmad$max_partviolence)
+
+x <- as.matrix(mmad[,-4])
+y <- (mmad$max_partviolence)
+
+grid =  10 ^ seq(-2, 2, length = 100)
+lasso_mod = glmnet(x, y, alpha = 1, lambda = grid)
+lasso_mod
+```
+
+Then, we use tidy from the broom package to extract the data from the regression into a useable format and use ggplot2 to plot the coefficient estimates as lambda changes.
+```{r}
+lasso_output <- broom::tidy(lasso_mod)
+
+head(lasso_output, 12)
+```
+
+Next, we use cross validation with cv.glmnet to pick the value of lambda that will minimize mean squared error, and give the coefficients you get when using that lambda.
+```{r}
+lasso_output %>%
+filter(term != '(Intercept)') %>%
+ggplot(aes(x = lambda, y = estimate, group = term, color = term)) +
+geom_line() +
+geom_hline(yintercept = 0)
+
+#cross validation
+lasso_cv <- cv.glmnet(x = x, y = y, alpha = 1, nfolds = 15, lambda = grid)
+
+#lambda with the best (lowest) MSE
+lasso_cv$lambda.min
+```
+
+We visualize our results.
+```{r}
+broom::tidy(lasso_cv) %>%
+filter(lambda <= 1) %>%
+ggplot(aes(x = lambda, y = estimate)) +
+geom_line() +
+geom_vline(xintercept = lasso_cv$lambda.min,
+linetype = 'dashed') +
+labs(y = 'MSE')
+
+```
+
+Lastly, we refit our LASSO model with the best lambda value found and print the coeeficients for each of the variables.
+```{r}
+lasso_final <- glmnet(x = x, y = y, alpha = 1, lambda = lasso_cv$lambda.min)
+coef(lasso_final)
+```
+
